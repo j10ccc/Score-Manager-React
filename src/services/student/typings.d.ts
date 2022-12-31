@@ -17,4 +17,28 @@ declare namespace StudentAPI {
     code: number;
     msg: string;
   }
+
+  interface ScoreNodeInterface {
+    label: string;
+    index: string;
+    list?: ScoreNodeInterface[];
+    content?: Array<string>;
+    value?: number;
+    top?: number;
+    unique?: boolean;
+    applyTime?: string | null;
+  }
+
+  interface GetMyScoresAPIData {
+    year: string;
+    term: string;
+  }
+
+  interface GetMyScoresAPIResult {
+    code: number;
+    msg: string;
+    data?: {
+      list: Array<ScoreNodeInterface>;
+    };
+  }
 }
