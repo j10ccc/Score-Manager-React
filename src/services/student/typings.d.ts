@@ -6,4 +6,15 @@ declare namespace StudentAPI {
       list: Array<{ name: string; id: string }>;
     };
   }
+
+  interface SubmitAdviceAPIData {
+    target: string;
+    content: string;
+    isAnon: boolean;
+  }
+
+  interface SubmitAdviceAPIReasult {
+    code: number;
+    msg: string;
+  }
 }

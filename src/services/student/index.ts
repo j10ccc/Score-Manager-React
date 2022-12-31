@@ -1,3 +1,4 @@
 import { getMyCoachesAPI } from "./getMyCoachesAPI";
+import { submitAdviceAPI } from "./submitAdviceAPI";
 
-export { getMyCoachesAPI };
+export { getMyCoachesAPI, submitAdviceAPI };
