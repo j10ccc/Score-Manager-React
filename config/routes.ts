@@ -6,15 +6,22 @@ const studentRoutes = [
     access: "canSeeStudent",
   },
   {
+    name: "申报表单",
+    path: "/student/myscores/form",
+    component: "./student/MyScores/CreateDraft",
+    access: "canSeeStudent",
+    hideInMenu: true,
+  },
+  {
     name: "综测申报",
     path: "/student/application",
+    access: "canSeeStudent",
     hideInBreadcrumb: true,
     routes: [
       {
-        name: "申报表单",
-        path: "form",
+        name: "草稿箱",
+        path: "drafts",
         component: "./student/Applications",
-        access: "canSeeStudent",
       },
       {
         name: "申报记录",

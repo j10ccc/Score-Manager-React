@@ -48,7 +48,7 @@ const AdvicePage = () => {
             name="target"
             label="辅导员姓名"
             request={async () => {
-              const res = await await getMyCoachesAPI();
+              const res = await getMyCoachesAPI();
               return (
                 res.data?.list.map((item) => ({
                   label: item.name,

@@ -30,8 +30,8 @@ declare namespace StudentAPI {
   }
 
   interface GetMyScoresAPIData {
-    year: string;
-    term: string;
+    year: number;
+    term: number;
   }
 
   interface GetMyScoresAPIResult {
@@ -43,8 +43,8 @@ declare namespace StudentAPI {
   }
 
   interface GetOthersScoresAPIData {
-    year: string;
-    term: string;
+    year: number;
+    term: number;
     target: string;
   }
 

@@ -3,9 +3,11 @@ import { fillScoreNodeData } from "@/utils";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
 import type { ProColumns } from "@ant-design/pro-components";
 import { Typography } from "antd";
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import TermSelectors from "./TermSelectors";
 import OthersScore from "./OthersScore";
+import ApplyLink from "./ApplyLink";
+import { useModel } from "@umijs/max";
 const { Text } = Typography;
 
 const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
@@ -37,15 +39,19 @@ const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
   {
     title: "操作",
     width: 120,
+    render: (_, record) => {
+      // TODO: check availiable applyTime
+      if (record.list === undefined) return <ApplyLink record={record} />;
+    },
   },
 ];
 
 const MyScoresPage = () => {
   const [loading, setLoading] = useState(false);
   const [scores, setScores] = useState<StudentAPI.ScoreNodeInterface[]>();
-  const termInfo = useRef({ year: new Date().getFullYear(), term: "0" });
+  const { selectTermInfo } = useModel("student");
 
-  const getScores = async (year: string, term: string) => {
+  const getScores = async (year: number, term: number) => {
     let list: StudentAPI.ScoreNodeInterface[] = [];
     try {
       setLoading(true);
@@ -62,16 +68,9 @@ const MyScoresPage = () => {
     return list;
   };
 
-  const setTermInfo = useCallback((year: number, term: string) => {
-    termInfo.current.year = year;
-    termInfo.current.term = term;
-    console.log(termInfo.current);
-    getScores(year.toString(), term);
-  }, []);
-
   useEffect(() => {
-    getScores(termInfo.current.year.toString(), termInfo.current.term);
-  }, []);
+    getScores(selectTermInfo.year, selectTermInfo.term);
+  }, [selectTermInfo]);
 
   return (
     <PageContainer ghost>
@@ -84,15 +83,14 @@ const MyScoresPage = () => {
         loading={loading}
         toolBarRender={() => [
           <OthersScore key="otherScore" />,
-          ...TermSelectors(termInfo, setTermInfo),
+          ...TermSelectors(),
         ]}
         dataSource={scores}
         expandable={{
           childrenColumnName: "list",
         }}
         options={{
-          reload: () =>
-            getScores(termInfo.current.year.toString(), termInfo.current.term),
+          reload: () => getScores(selectTermInfo.year, selectTermInfo.term),
         }}
       />
     </PageContainer>
