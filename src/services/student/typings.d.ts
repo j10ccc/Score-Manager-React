@@ -41,4 +41,18 @@ declare namespace StudentAPI {
       list: Array<ScoreNodeInterface>;
     };
   }
+
+  interface GetOthersScoresAPIData {
+    year: string;
+    term: string;
+    target: string;
+  }
+
+  interface GetOthersScoresAPIResult {
+    code: number;
+    msg: string;
+    data?: {
+      score: number;
+    };
+  }
 }

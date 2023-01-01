@@ -1,14 +1,14 @@
 import { Select } from "antd";
-import { MutableRefObject } from "react";
+import { MutableRefObject, ReactNode } from "react";
 
 const TermSelectors = (
   props: MutableRefObject<{ year: number; term: string }>,
   setTermInfo: (year: number, term: string) => void
-) => {
+): ReactNode[] => {
   const yearOptions: Array<{ value: number; label: string }> = [];
   const termOptions: Array<{ value: string; label: string }> = [
-    { value: "上", label: "上学期" },
-    { value: "下", label: "下学期" },
+    { value: "0", label: "上学期" },
+    { value: "1", label: "下学期" },
   ];
   const { year, term } = props.current;
   for (let i = 0; i < 4; i++) {

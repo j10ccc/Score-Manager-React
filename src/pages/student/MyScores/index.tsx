@@ -5,6 +5,7 @@ import type { ProColumns } from "@ant-design/pro-components";
 import { Typography } from "antd";
 import { useCallback, useEffect, useRef, useState } from "react";
 import TermSelectors from "./TermSelectors";
+import OthersScore from "./OthersScore";
 const { Text } = Typography;
 
 const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
@@ -42,7 +43,7 @@ const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
 const MyScoresPage = () => {
   const [loading, setLoading] = useState(false);
   const [scores, setScores] = useState<StudentAPI.ScoreNodeInterface[]>();
-  const termInfo = useRef({ year: new Date().getFullYear(), term: "上" });
+  const termInfo = useRef({ year: new Date().getFullYear(), term: "0" });
 
   const getScores = async (year: string, term: string) => {
     let list: StudentAPI.ScoreNodeInterface[] = [];
@@ -79,8 +80,12 @@ const MyScoresPage = () => {
         rowKey="index"
         columns={columns}
         search={false}
+        pagination={false}
         loading={loading}
-        toolBarRender={() => TermSelectors(termInfo, setTermInfo)}
+        toolBarRender={() => [
+          <OthersScore key="otherScore" />,
+          ...TermSelectors(termInfo, setTermInfo),
+        ]}
         dataSource={scores}
         expandable={{
           childrenColumnName: "list",
