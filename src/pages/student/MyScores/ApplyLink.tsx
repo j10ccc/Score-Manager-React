@@ -1,4 +1,3 @@
-import { createGuid } from "@/utils";
 import { history, useModel } from "@umijs/max";
 import { Typography } from "antd";
 const { Link } = Typography;
@@ -13,7 +12,6 @@ const ApplyLink = (props: PropsType) => {
 
   const onClick = () => {
     setMyApplyTemp({
-      guid: createGuid(),
       ...selectTermInfo,
       label: record.label,
       index: record.index,

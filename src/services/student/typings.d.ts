@@ -55,4 +55,19 @@ declare namespace StudentAPI {
       score: number;
     };
   }
+
+  interface ApplyScoreAPIData {
+    name: string;
+    value: string;
+    content?: string;
+    files?: any;
+  }
+
+  interface ApplyScoreAPIResult {
+    code: number;
+    msg: string;
+    data?: {
+      id: string;
+    };
+  }
 }

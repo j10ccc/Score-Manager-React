@@ -1,5 +1,6 @@
 import { Application } from "@/models/student";
-import { getMyCoachesAPI } from "@/services/student";
+import { applyScoreAPI, getMyCoachesAPI } from "@/services/student";
+import { createGuid } from "@/utils";
 import {
   ProForm,
   ProFormDigit,
@@ -10,7 +11,7 @@ import {
   ProFormText,
 } from "@ant-design/pro-components";
 import { history, useModel } from "@umijs/max";
-import { Button, Descriptions, message } from "antd";
+import { Button, Descriptions, Popconfirm, message } from "antd";
 import { useEffect, useRef, useState } from "react";
 
 type PropsType = {
@@ -26,16 +27,26 @@ const ApplicationForm = (props: PropsType) => {
   }, [initialData]);
 
   const formRef = useRef<ProFormInstance>();
-  const { setMyApplyDrafts } = useModel("student");
+  const { addMyApplyDraft, deleteMyApplyDraft } = useModel("student");
 
   const onFinish = async (formData: any) => {
-    console.log(formData);
+    try {
+      const res = await applyScoreAPI({
+        ...formData,
+        name: initialData.index,
+      });
+      if (res.code === 200) message.success("申请成功");
+      else throw new Error();
+    } catch (error) {
+      message.error("申请失败");
+    }
   };
 
   const handleDraft = () => {
     console.log(formRef.current?.getFieldValue("contents"));
     formRef.current?.validateFieldsReturnFormatValue?.().then((values) => {
-      setMyApplyDrafts({
+      addMyApplyDraft({
+        guid: createGuid(),
         ...dataSource,
         content: values.contents.map((item: any) => item.content),
         value: values.value,
@@ -44,6 +55,10 @@ const ApplicationForm = (props: PropsType) => {
       message.success("已保存到草稿箱");
       history.push("/student/application/drafts");
     });
+  };
+
+  const handleDelete = () => {
+    deleteMyApplyDraft(initialData.guid!);
   };
 
   return (
@@ -62,10 +77,27 @@ const ApplicationForm = (props: PropsType) => {
         onFinish={onFinish}
         formRef={formRef}
         submitter={{
+          resetButtonProps: {
+            style: {
+              display: "none",
+            },
+          },
           render: (_, doms) => [
             <Button key="draft" type="dashed" onClick={handleDraft}>
               存草稿
             </Button>,
+            initialData.guid !== undefined && (
+              <Popconfirm
+                title="删除草稿"
+                description={`是否确定删除草稿 - ${initialData.label}`}
+                onConfirm={handleDelete}
+                okText="确定"
+                cancelText="取消"
+                key="delete"
+              >
+                <Button danger>删除</Button>
+              </Popconfirm>
+            ),
             ...doms,
           ],
         }}
