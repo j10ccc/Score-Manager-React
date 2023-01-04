@@ -35,7 +35,6 @@ const useStudent = () => {
   };
 
   const setMyApplyDrafts = (value: Application) => {
-    // TODO: top 负数
     setMyApplyDraftsInner((origin) => {
       let findSame = false;
       let tmp = origin.map((item) => {
