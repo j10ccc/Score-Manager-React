@@ -56,6 +56,27 @@ declare namespace StudentAPI {
     };
   }
 
+  interface Application {
+    guid?: string; // for local store
+    term: number;
+    year: number;
+    label: string; // 中文名
+    index: string; // 定位
+    top: number;
+    value?: number;
+    content?: string[];
+    target?: string; // 辅导员工号
+    // TODO: files
+  }
+
+  interface ApplicationRecord extends Application {
+    id: string;
+    time: string;
+    state: "rejected" | "pending" | "approved";
+    rejectReason?: string; // 辅导员驳回理由
+    complain?: string; // 学生申诉内容
+  }
+
   interface ApplyScoreAPIData {
     name: string;
     value: string;
@@ -68,6 +89,14 @@ declare namespace StudentAPI {
     msg: string;
     data?: {
       id: string;
+    };
+  }
+
+  interface GetMyApplyHistoryAPIResult {
+    code: number;
+    msg: string;
+    data?: {
+      list: ApplicationRecord[];
     };
   }
 }

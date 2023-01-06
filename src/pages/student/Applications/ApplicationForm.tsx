@@ -1,4 +1,3 @@
-import { Application } from "@/models/student";
 import { applyScoreAPI, getMyCoachesAPI } from "@/services/student";
 import { createGuid } from "@/utils";
 import {
@@ -15,7 +14,7 @@ import { Button, Descriptions, Popconfirm, message } from "antd";
 import { useEffect, useRef, useState } from "react";
 
 type PropsType = {
-  initialData: Application;
+  initialData: StudentAPI.Application;
 };
 
 const ApplicationForm = (props: PropsType) => {

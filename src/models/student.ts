@@ -1,17 +1,6 @@
 import { useEffect, useState } from "react";
 
-export interface Application {
-  guid?: string; // for local store
-  term: number;
-  year: number;
-  label: string; // 中文名
-  index: string; // 定位
-  top: number;
-  value?: number;
-  content?: string;
-  target?: string; // 辅导员工号
-  // TODO: files
-}
+type Application = StudentAPI.Application;
 
 type ApplicationDraft = Application & { guid: string };
 
