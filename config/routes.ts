@@ -76,4 +76,22 @@ export const routes = [
   },
   ...studentRoutes,
   ...coachRoutes,
+  {
+    name: "话题广场",
+    path: "/square",
+    component: "./square",
+    wrappers: ["@/wrappers/Auth"],
+  },
+  {
+    name: "话题",
+    path: "/square/topic/:id",
+    component: "./square/topic",
+    hideInMenu: true,
+  },
+  {
+    name: "新建话题",
+    path: "/square/create-topic",
+    component: "./square/create-topic",
+    hideInMenu: true,
+  },
 ];

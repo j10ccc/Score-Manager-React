@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface SystemStore {
   name: string;
@@ -11,14 +11,26 @@ const useSystem = () => {
   const [role, setRoleInner] = useState<SystemStore["role"]>();
   const [token, setTokenInner] = useState<SystemStore["token"]>();
 
+  useEffect(() => {
+    setRoleInner(
+      (window.localStorage.getItem("role") as SystemStore["role"]) || undefined
+    );
+
+    // FIXME: get token from cookie
+    setTokenInner(
+      (window.localStorage.getItem("token") as SystemStore["token"]) ||
+        undefined
+    );
+  }, []);
+
   const setName = (name: SystemStore["name"]) => {
     setNameInner(name);
-    // window.localStorage.setItem("name", name);
+    window.localStorage.setItem("name", name);
   };
 
   const setRole = (role: SystemStore["role"]) => {
     setRoleInner(role);
-    // window.localStorage.setItem("role", role);
+    window.localStorage.setItem("role", role);
   };
 
   const setToken = (token: SystemStore["token"]) => {

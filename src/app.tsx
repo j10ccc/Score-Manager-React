@@ -22,6 +22,10 @@ export async function getInitialState(): Promise<{
   } catch (error) {
     console.log(error);
   }
+
+  // FIXME: remove localStorage when login failed
+  if (name) window.localStorage.setItem("name", name);
+  if (role) window.localStorage.setItem("role", role);
   return { name, role };
 }
 

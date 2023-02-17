@@ -10,3 +10,5 @@
 /.umi-test
 /dist
 /.mfsu
+
+.DS_Store
