@@ -3,11 +3,10 @@ import { fillScoreNodeData } from "@/utils";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
 import type { ProColumns } from "@ant-design/pro-components";
 import { Typography } from "antd";
-import { useEffect, useState } from "react";
-import TermSelectors from "./TermSelectors";
+import { useEffect, useState, useRef } from "react";
+import TermSelector from "@/components/TermSelector";
 import OthersScore from "./OthersScore";
 import ApplyLink from "./ApplyLink";
-import { useModel } from "@umijs/max";
 const { Text } = Typography;
 
 const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
@@ -21,7 +20,7 @@ const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
     dataIndex: "value",
     width: 120,
     align: "center",
-    render: (data, record) => {
+    render: (data: string, record: any) => {
       const isNode = record.list !== undefined;
       return (
         <Text code={isNode}>
@@ -39,7 +38,7 @@ const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
   {
     title: "操作",
     width: 120,
-    render: (_, record) => {
+    render: (_: string, record: any) => {
       // TODO: check availiable applyTime
       if (record.list === undefined) return <ApplyLink record={record} />;
     },
@@ -49,7 +48,14 @@ const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
 const MyScoresPage = () => {
   const [loading, setLoading] = useState(false);
   const [scores, setScores] = useState<StudentAPI.ScoreNodeInterface[]>();
-  const { selectTermInfo } = useModel("student");
+  const defaultTermInfo = useRef({
+    year: new Date().getFullYear(),
+    term: 0,
+  });
+
+  const [selectedTermInfo, setSelectedTermInfo] = useState(
+    defaultTermInfo.current
+  );
 
   const getScores = async (year: number, term: number) => {
     let list: StudentAPI.ScoreNodeInterface[] = [];
@@ -68,9 +74,13 @@ const MyScoresPage = () => {
     return list;
   };
 
+  const onTermChange = (e: { year: number; term: number }) => {
+    setSelectedTermInfo(e);
+  };
+
   useEffect(() => {
-    getScores(selectTermInfo.year, selectTermInfo.term);
-  }, [selectTermInfo]);
+    getScores(selectedTermInfo.year, selectedTermInfo.term);
+  }, [selectedTermInfo]);
 
   return (
     <PageContainer ghost>
@@ -83,14 +93,16 @@ const MyScoresPage = () => {
         loading={loading}
         toolBarRender={() => [
           <OthersScore key="otherScore" />,
-          ...TermSelectors(),
+          <TermSelector
+            key="termSelector"
+            onChange={onTermChange}
+            defaultValue={defaultTermInfo.current}
+          />,
         ]}
         dataSource={scores}
-        expandable={{
-          childrenColumnName: "list",
-        }}
+        expandable={{ childrenColumnName: "list" }}
         options={{
-          reload: () => getScores(selectTermInfo.year, selectTermInfo.term),
+          reload: () => getScores(selectedTermInfo.year, selectedTermInfo.term),
         }}
       />
     </PageContainer>
