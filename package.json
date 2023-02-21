@@ -16,7 +16,7 @@
     "@ant-design/pro-components": "^2.3.52",
     "@bytemd/plugin-gfm": "^1.20.0",
     "@bytemd/react": "^1.20.0",
-    "@umijs/max": "^4.0.41",
+    "@umijs/max": "^4.0.44",
     "antd": "^5.0.0",
     "bytemd": "^1.20.0",
     "github-markdown-css": "^5.1.0"
