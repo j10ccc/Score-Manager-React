@@ -1,8 +1,8 @@
 // 运行时配置
 
 import { RunTimeLayoutConfig } from "@umijs/max";
-import { Space } from "antd";
 import { loginWithCookieAPI } from "./services/public";
+import { history } from "@umijs/max";
 
 /**
  * 初始化用户信息
@@ -36,12 +36,13 @@ export const layout: RunTimeLayoutConfig = () => {
     menu: {
       locale: false,
     },
-    rightRender: (initialState: any) => (
-      <Space>
-        <div>{initialState.name} </div>
-      </Space>
-    ),
-    // noFound: <>{window.location.replace("/home")}</>,
-    // unAccessible: <>{window.location.replace("/login")}</>
+    logout: (initialState: any) => {
+      window.localStorage.removeItem("name");
+      window.localStorage.removeItem("role");
+      document.cookie = "sms-session=";
+      history.push("/login");
+      return initialState;
+    },
+    // rightRender: (initialState: any) => (),
   };
 };

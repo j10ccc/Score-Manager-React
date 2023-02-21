@@ -45,9 +45,9 @@ const studentRoutes = [
 
 const coachRoutes = [
   {
-    name: "录入成绩",
-    path: "/coach/access",
-    component: "./coach/Access",
+    name: "学生成绩管理",
+    path: "/coach/scores",
+    component: "./coach/ScoreManager",
     wrappers: ["@/wrappers/Auth"],
     access: "canSeeCoach",
   },

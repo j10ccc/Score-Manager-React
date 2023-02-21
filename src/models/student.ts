@@ -6,7 +6,6 @@ type ApplicationDraft = Application & { guid: string };
 
 interface StudentStore {
   applications: Application[];
-  termInfo: { year: number; term: number };
 }
 
 const useStudent = () => {
@@ -17,9 +16,6 @@ const useStudent = () => {
   const [myApplyRecords, setMyApplyRecordsInner] = useState<
     StudentStore["applications"]
   >([]);
-  const [selectTermInfo, setSelectTermInfoInner] = useState<
-    StudentStore["termInfo"]
-  >({ year: new Date().getFullYear(), term: 0 });
 
   useEffect(() => {
     const localMyApplyDrafts = localStorage.getItem("my_apply_drafts");
@@ -58,20 +54,14 @@ const useStudent = () => {
     setMyApplyRecordsInner(value);
   };
 
-  const setSelectTermInfo = (year: number, term: number) => {
-    setSelectTermInfoInner({ year, term });
-  };
-
   return {
     myApplyTemp,
     myApplyDrafts,
     myApplyRecords,
-    selectTermInfo,
     setMyApplyTemp,
     addMyApplyDraft,
     deleteMyApplyDraft,
     setMyApplyRecords,
-    setSelectTermInfo,
   };
 };
 
