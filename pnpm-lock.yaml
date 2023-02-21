@@ -6,6 +6,7 @@ specifiers:
   '@ant-design/pro-components': ^2.3.52
   '@bytemd/plugin-gfm': ^1.20.0
   '@bytemd/react': ^1.20.0
+  '@types/lodash-es': ^4.17.6
   '@types/react': ^18.0.0
   '@types/react-dom': ^18.0.0
   '@umijs/lint': ^4.0.41
@@ -15,6 +16,7 @@ specifiers:
   github-markdown-css: ^5.1.0
   husky: ^8.0.1
   lint-staged: ^13.0.3
+  lodash-es: ^4.17.21
   prettier: ^2.7.1
   prettier-plugin-organize-imports: ^2
   prettier-plugin-packagejson: ^2
@@ -26,10 +28,12 @@ dependencies:
   '@ant-design/pro-components': 2.3.52_antd@5.1.1
   '@bytemd/plugin-gfm': 1.20.0_bytemd@1.20.0
   '@bytemd/react': 1.20.0
+  '@types/lodash-es': 4.17.6
   '@umijs/max': 4.0.52_gtouq4uvnd4qb7od2huim7mm3y
   antd: 5.1.1
   bytemd: 1.20.0
   github-markdown-css: 5.1.0
+  lodash-es: 4.17.21
 
 devDependencies:
   '@types/react': 18.0.26

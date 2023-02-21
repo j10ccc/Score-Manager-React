@@ -12,11 +12,21 @@ declare namespace CoachAPI {
   }
 
   type GetStudentResult = IResponse<{
-    list: Array<StudentAPI.Student>;
+    list: Array<
+      StudentAPI.Student & { scores: StudentAPI.ScoreNodeInterface[] }
+    >;
     total: number;
   }>;
 
   type GetScoreStructureResult = IResponse<{
     list: StudentAPI.ScoreNodeInterface[];
+  }>;
+
+  interface GetScoreData {
+    username: string;
+  }
+
+  type GetScoreResult = IResponse<{
+    scores: StudentAPI.ScoreNodeInterface[];
   }>;
 }

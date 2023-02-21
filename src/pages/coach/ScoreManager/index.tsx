@@ -4,7 +4,8 @@ import { useState, useEffect } from "react";
 import type { ProColumns } from "@ant-design/pro-components";
 import { Typography } from "antd";
 import { getScoreStructureAPI } from "@/services/coach/getScoreStructureAPI";
-import { scoreColumsTransfer } from "@/utils";
+import { flattenScoresNodes, scoreColumsTransfer } from "@/utils";
+import { omit } from "lodash-es";
 const { Link } = Typography;
 
 const ScoreManagerPage = () => {
@@ -39,7 +40,7 @@ const ScoreManagerPage = () => {
       key: "option",
       fixed: "right",
       width: 60,
-      render: (_, record) => {
+      render: (_: string, record: any) => {
         return <Link href={`scores/${record.username}`}>查看</Link>;
       },
     },
@@ -48,13 +49,21 @@ const ScoreManagerPage = () => {
   return (
     <PageContainer ghost>
       <ProTable<StudentAPI.Student>
-        request={async (params) => {
+        request={async (params: any) => {
           const res = await getStudentAPI({
             page: params.current,
             size: params.pageSize,
           });
+          const tmp = res.data.list.map((item) => {
+            const flattenList = flattenScoresNodes(item.scores);
+            const newItem: any = omit(item, ["scores"]);
+            flattenList.forEach((score) => {
+              newItem[score.index] = score.value;
+            });
+            return newItem;
+          });
           return {
-            data: res.data.list,
+            data: tmp,
             success: true,
             total: res.data.total,
           };
