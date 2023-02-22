@@ -51,6 +51,13 @@ const coachRoutes = [
     wrappers: ["@/wrappers/Auth"],
     access: "canSeeCoach",
   },
+  {
+    name: "学生申报管理",
+    path: "/coach/applications",
+    component: "./coach/ApplicationManager",
+    wrappers: ["@/wrappers/Auth"],
+    access: "canSeeCoach",
+  },
 ];
 
 export const routes = [

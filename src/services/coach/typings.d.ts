@@ -29,4 +29,35 @@ declare namespace CoachAPI {
   type GetScoreResult = IResponse<{
     scores: StudentAPI.ScoreNodeInterface[];
   }>;
+
+  type GetApplyListData = {
+    page: number;
+    size: number;
+  };
+
+  type GetApplyListResult = IResponse<{
+    count: number;
+    list: StudentAPI.ApplicationRecord[];
+  }>;
+
+  interface SubmitScoresData {
+    target: string; // 学生学号
+    scores: StudentAPI.Score[];
+  }
+
+  type SubmitScoresResult = IResponse<{
+    data: null;
+  }>;
+
+  interface SubmitApprovesData {
+    applications: Array<{
+      target: string; // 审批id
+      reason?: string; // 理由
+      state: StudentAPI.ApplicationState; // 审批状态
+    }>;
+  }
+
+  type SubmitApprovesResult = IResponse<{
+    data: null;
+  }>;
 }

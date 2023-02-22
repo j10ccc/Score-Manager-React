@@ -87,12 +87,21 @@ declare namespace StudentAPI {
     // TODO: files
   }
 
+  type ApplicationState =
+    | "start"
+    | "pending"
+    | "rejected"
+    | "approved"
+    | "complain"
+    | "failed";
+
   interface ApplicationRecord extends Application {
     id: string;
     time: string;
-    state: "rejected" | "pending" | "approved";
+    state: ApplicationState;
     rejectReason?: string; // 辅导员驳回理由
     complain?: string; // 学生申诉内容
+    username: string; // 学号
   }
 
   interface ApplyScoreAPIData {
