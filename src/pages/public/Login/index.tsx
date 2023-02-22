@@ -22,7 +22,7 @@ const LoginPage = () => {
       if (res.code === 200) {
         const { name, token } = res.data;
         setName(name);
-        setToken(token);
+        setToken(`sms-session=${token};`);
         setRole(loginRole);
         window.location.replace("/home");
       } else {
