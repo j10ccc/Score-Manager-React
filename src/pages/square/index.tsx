@@ -1,25 +1,12 @@
 import { getTopicsAPI } from "@/services/square/getTopicsAPI";
 import { Button, Tag } from "antd";
-import { useEffect, useState } from "react";
 import { PageContainer, ProList } from "@ant-design/pro-components";
 import { Link, history } from "@umijs/max";
 
 const TopicSquarePage = () => {
-  const [page] = useState(1);
-  const [list, setList] = useState<SquareAPI.Topic[]>([]);
-
-  const getTopics = async () => {
-    const res = await getTopicsAPI({ page, size: 10 });
-    setList(res.data.list);
-  };
-
   const handleCreateTopic = () => {
     history.push("/square/create-topic");
   };
-
-  useEffect(() => {
-    getTopics();
-  }, []);
 
   return (
     <PageContainer ghost>
@@ -34,7 +21,18 @@ const TopicSquarePage = () => {
         itemLayout="vertical"
         headerTitle="话题"
         rowKey="id"
-        dataSource={list}
+        pagination={{ pageSize: 10 }}
+        request={async (params: any) => {
+          const res = await getTopicsAPI({
+            page: params.current,
+            size: params.pageSize,
+          });
+          return {
+            data: res.data.list,
+            success: true,
+            total: res.data.count,
+          };
+        }}
         metas={{
           title: {
             render: (text, record) => (
