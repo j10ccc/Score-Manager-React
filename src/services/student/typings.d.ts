@@ -24,17 +24,20 @@ declare namespace StudentAPI {
     msg: string;
   }
 
-  interface ScoreNodeInterface {
+  interface Score {
     /** 中文名 e.g. 基本评定分 */
     label: string;
     /** 节点索引 e.g. v-2-1 */
     index: string;
+    /** 分数 */
+    value?: number;
+  }
+
+  interface ScoreNodeInterface extends Score {
     /** 父节点特有的子节点嵌套列表 */
     list?: ScoreNodeInterface[];
     /** 申请内容，可以多条 */
     content?: Array<string>;
-    /** 分数 */
-    value?: number;
     /** 该项分数上限 */
     top?: number;
     /** deprecated: 是否唯一 */

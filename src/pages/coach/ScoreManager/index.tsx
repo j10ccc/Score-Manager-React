@@ -1,17 +1,24 @@
 import { ProTable, PageContainer } from "@ant-design/pro-components";
 import { getStudentAPI } from "@/services/coach/getStudentAPI";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import type { ProColumns } from "@ant-design/pro-components";
-import { Typography } from "antd";
+import { Typography, Button } from "antd";
 import { getScoreStructureAPI } from "@/services/coach/getScoreStructureAPI";
 import { flattenScoresNodes, scoreColumsTransfer } from "@/utils";
 import { omit } from "lodash-es";
+import ScoreModalForm from "./ScoreModalForm";
 const { Link } = Typography;
 
 const ScoreManagerPage = () => {
   const [scoreColumns, setScoreColumns] = useState<
     StudentAPI.ScoreNodeInterface[]
   >([]);
+  const [showEditor, setShowEditor] = useState(false);
+  const formStore = useRef<
+    StudentAPI.Student & {
+      [key: string]: StudentAPI.Score;
+    }
+  >();
 
   useEffect(() => {
     getScoreStructureAPI().then((res) => {
@@ -19,6 +26,25 @@ const ScoreManagerPage = () => {
       setScoreColumns(tmp);
     });
   }, []);
+
+  const handleInputScore = () => {
+    formStore.current = undefined;
+    setShowEditor(true);
+  };
+
+  const handleUpdateScore = (value: any) => {
+    formStore.current = value;
+    setShowEditor(true);
+  };
+
+  const handleEditFinish = (e: any) => {
+    setShowEditor(false);
+    console.log(e);
+  };
+
+  const handleEditorClose = () => {
+    setShowEditor(false);
+  };
 
   const columns: ProColumns<StudentAPI.Student>[] = [
     {
@@ -41,7 +67,7 @@ const ScoreManagerPage = () => {
       fixed: "right",
       width: 60,
       render: (_: string, record: any) => {
-        return <Link href={`scores/${record.username}`}>查看</Link>;
+        return <Link onClick={() => handleUpdateScore(record)}>编辑</Link>;
       },
     },
   ];
@@ -71,9 +97,19 @@ const ScoreManagerPage = () => {
         rowIndex="username"
         columns={columns}
         headerTitle="学生信息"
-        toolBarRender={() => {}}
+        toolBarRender={() => [
+          <Button key="input" type="primary" onClick={handleInputScore}>
+            录入成绩
+          </Button>,
+        ]}
         scroll={{ x: 900 }}
         bordered
+      />
+      <ScoreModalForm
+        isShow={showEditor}
+        onFinish={handleEditFinish}
+        initialData={formStore.current}
+        onHidden={handleEditorClose}
       />
     </PageContainer>
   );
