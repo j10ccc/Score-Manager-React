@@ -7,6 +7,7 @@ import { getScoreStructureAPI } from "@/services/coach/getScoreStructureAPI";
 import { flattenScoresNodes, scoreColumsTransfer } from "@/utils";
 import { omit } from "lodash-es";
 import ScoreModalForm from "./ScoreModalForm";
+import { submitScoresAPI } from "@/services/coach/submitScoresAPI";
 const { Link } = Typography;
 
 const ScoreManagerPage = () => {
@@ -39,7 +40,14 @@ const ScoreManagerPage = () => {
 
   const handleEditFinish = (e: any) => {
     setShowEditor(false);
-    console.log(e);
+    const tmp: any = {
+      target: e.username,
+      scores: [],
+    };
+    Object.entries(omit(e, ["username"])).forEach((item) => {
+      tmp.scores.push({ index: item[0], value: item[1] });
+    });
+    submitScoresAPI({ ...tmp });
   };
 
   const handleEditorClose = () => {
