@@ -32,7 +32,8 @@ export async function getInitialState(): Promise<{
 export const layout: RunTimeLayoutConfig = () => {
   return {
     title: "综测成绩管理系统",
-    logo: "https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg",
+    // logo: "https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg",
+    logo: "https://www.svgrepo.com/show/73859/exam-a-plus.svg",
     menu: {
       locale: false,
     },

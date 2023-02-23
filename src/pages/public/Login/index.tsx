@@ -2,7 +2,7 @@ import { DEFAULT_NAME } from "@/constants";
 import { LoginFormPage, ProFormText } from "@ant-design/pro-components";
 import { LockOutlined, UserOutlined } from "@ant-design/icons";
 import { Tabs, message } from "antd";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { loginAPI } from "@/services/public";
 import { useModel } from "@umijs/max";
 
@@ -14,6 +14,12 @@ const LoginPage = () => {
   };
   const [loading, setLoading] = useState(false);
   const { setName, setToken, setRole } = useModel("global");
+
+  const randomCoverIndex = useRef(Math.floor(Math.random() * 2));
+  const photoUrl = useRef([
+    "http://47.96.134.75:1234/static/a47124e5-4d99-4a37-9381-b26b4e173c44.webp",
+    "http://47.96.134.75:1234/static/c91f7106-68cf-4ac4-97d2-0394df5563df.webp",
+  ]);
 
   const onFinish = async (formData: any) => {
     try {
@@ -37,11 +43,12 @@ const LoginPage = () => {
   };
 
   return (
-    <div style={{ height: "calc(100vh - 48px)" }}>
+    <div style={{ height: "780px", width: "1360px", margin: "auto" }}>
       <LoginFormPage
         title="登录"
         subTitle={`浙江工业大学 - ${DEFAULT_NAME}`}
         onFinish={onFinish}
+        backgroundImageUrl={photoUrl.current[randomCoverIndex.current]}
       >
         <Tabs
           centered
