@@ -46,10 +46,9 @@ declare namespace StudentAPI {
     applyTime?: string | null;
   }
 
-  /** e.g. year: 2021, term: 0 */
+  /** e.g. year: 2021 */
   interface GetMyScoresAPIData {
     year: number;
-    term: number;
   }
 
   interface GetMyScoresAPIResult {
@@ -62,7 +61,6 @@ declare namespace StudentAPI {
 
   interface GetOthersScoresAPIData {
     year: number;
-    term: number;
     target: string;
   }
 
@@ -76,7 +74,6 @@ declare namespace StudentAPI {
 
   interface Application {
     guid?: string; // for local store
-    term: number;
     year: number;
     label: string; // 中文名
     index: string; // 定位

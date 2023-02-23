@@ -64,9 +64,6 @@ const ApplicationForm = (props: PropsType) => {
     <div style={{ background: "white", padding: "24px" }}>
       <Descriptions title="基本信息" column={1}>
         <Descriptions.Item label="学年">{dataSource.year}</Descriptions.Item>
-        <Descriptions.Item label="学期">
-          {dataSource.term === 0 ? "上" : "下"}
-        </Descriptions.Item>
         <Descriptions.Item label="申请项目">
           {dataSource.index}
         </Descriptions.Item>

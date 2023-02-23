@@ -64,9 +64,6 @@ const ApplicationPreview = (props: PropsType) => {
           <Descriptions.Item label="学年" span={1}>
             {record.year}
           </Descriptions.Item>
-          <Descriptions.Item label="学期" span={1}>
-            {record.term}
-          </Descriptions.Item>
           <Descriptions.Item label="申请分数" span={1}>
             {record.value}
           </Descriptions.Item>
