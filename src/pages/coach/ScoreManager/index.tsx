@@ -4,7 +4,11 @@ import { useState, useEffect, useRef } from "react";
 import type { ProColumns } from "@ant-design/pro-components";
 import { Typography, Button } from "antd";
 import { getScoreStructureAPI } from "@/services/coach/getScoreStructureAPI";
-import { flattenScoresNodes, scoreColumsTransfer } from "@/utils";
+import {
+  flattenScoresNodes,
+  scoreColumsTransfer,
+  scoreForestTransfer,
+} from "@/utils";
 import { omit } from "lodash-es";
 import ScoreModalForm from "./ScoreModalForm";
 import { submitScoresAPI } from "@/services/coach/submitScoresAPI";
@@ -23,7 +27,8 @@ const ScoreManagerPage = () => {
 
   useEffect(() => {
     getScoreStructureAPI().then((res) => {
-      const tmp = res.data.list.map((node) => scoreColumsTransfer(node));
+      const struct = scoreForestTransfer(res.data.list);
+      const tmp = struct.map((node) => scoreColumsTransfer(node));
       setScoreColumns(tmp);
     });
   }, []);
@@ -110,6 +115,7 @@ const ScoreManagerPage = () => {
             录入成绩
           </Button>,
         ]}
+        pagination={{ pageSize: 10 }}
         scroll={{ x: 900 }}
         bordered
       />

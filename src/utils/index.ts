@@ -1,5 +1,6 @@
 import scoreColumsTransfer from "./scoreColumnsTransfer";
 import flattenScoresNodes from "./flattenScoresNodes";
+import scoreForestTransfer from "./scoreForestTransfer";
 
 export const fillScoreNodeData = (
   item: StudentAPI.ScoreNodeInterface
@@ -17,4 +18,4 @@ export const createGuid = () => {
   return `${s4()}-${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 };
 
-export { scoreColumsTransfer, flattenScoresNodes };
+export { scoreColumsTransfer, flattenScoresNodes, scoreForestTransfer };

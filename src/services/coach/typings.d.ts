@@ -19,7 +19,7 @@ declare namespace CoachAPI {
   }>;
 
   type GetScoreStructureResult = IResponse<{
-    list: StudentAPI.ScoreNodeInterface[];
+    list: StudentAPI.Score[];
   }>;
 
   interface GetScoreData {

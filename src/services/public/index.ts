@@ -1,3 +1,3 @@
-import { loginAPI, loginWithCookieAPI } from "./loginAPI";
+import { loginAPI, loginWithTokenAPI } from "./loginAPI";
 
-export { loginAPI, loginWithCookieAPI };
+export { loginAPI, loginWithTokenAPI };
