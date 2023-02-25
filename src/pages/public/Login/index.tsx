@@ -28,7 +28,7 @@ const LoginPage = () => {
       if (res.code === 200) {
         const { name, token } = res.data;
         setName(name);
-        setToken(`sms-session=${token};`);
+        setToken(token);
         setRole(loginRole);
         window.location.replace("/home");
       } else {

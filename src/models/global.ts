@@ -15,8 +15,6 @@ const useSystem = () => {
     setRoleInner(
       (window.localStorage.getItem("role") as SystemStore["role"]) || undefined
     );
-
-    // FIXME: get token from cookie
     setTokenInner(
       (window.localStorage.getItem("token") as SystemStore["token"]) ||
         undefined
@@ -34,14 +32,14 @@ const useSystem = () => {
   };
 
   const setToken = (token: SystemStore["token"]) => {
-    setTokenInner(token + "; expires=session");
-    document.cookie = token;
+    setTokenInner(token);
+    window.localStorage.setItem("token", token);
   };
 
   const clearSystemStore = () => {
     window.localStorage.removeItem("name");
     window.localStorage.removeItem("role");
-    document.cookie = "";
+    window.localStorage.removeItem("token");
   };
 
   return {

@@ -10,9 +10,12 @@ export async function loginAPI(data: PublicAPI.LoginAPIData) {
   });
 }
 
-export async function loginWithCookieAPI() {
-  return request<PublicAPI.LoginAPIWithCookieResult>("/api/login", {
+export async function loginWithTokenAPI() {
+  const token = window.localStorage.getItem("token") || "";
+  return request<PublicAPI.LoginAPIWithTokenResult>("/api/login", {
+    headers: {
+      Authorization: token,
+    },
     method: "GET",
-    withCredentials: true,
   });
 }

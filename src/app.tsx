@@ -1,7 +1,7 @@
 // 运行时配置
 
 import { RunTimeLayoutConfig } from "@umijs/max";
-import { loginWithCookieAPI } from "./services/public";
+import { loginWithTokenAPI } from "./services/public";
 import { history } from "@umijs/max";
 
 /**
@@ -15,7 +15,7 @@ export async function getInitialState(): Promise<{
   let name = undefined;
   let role = undefined;
   try {
-    const res = await loginWithCookieAPI();
+    const res = await loginWithTokenAPI();
     if (res.code !== 200) throw new Error(res.msg);
     name = res.data.name;
     role = res.data.role;
@@ -32,7 +32,6 @@ export async function getInitialState(): Promise<{
 export const layout: RunTimeLayoutConfig = () => {
   return {
     title: "综测成绩管理系统",
-    // logo: "https://img.alicdn.com/tfs/TB1YHEpwUT1gK0jSZFhXXaAtVXa-28-27.svg",
     logo: "https://www.svgrepo.com/show/73859/exam-a-plus.svg",
     menu: {
       locale: false,
@@ -40,10 +39,9 @@ export const layout: RunTimeLayoutConfig = () => {
     logout: (initialState: any) => {
       window.localStorage.removeItem("name");
       window.localStorage.removeItem("role");
-      document.cookie = "sms-session=";
+      window.localStorage.removeItem("token");
       history.push("/login");
       return initialState;
     },
-    // rightRender: (initialState: any) => (),
   };
 };

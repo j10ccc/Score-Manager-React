@@ -14,7 +14,7 @@ declare namespace PublicAPI {
     };
   }
 
-  interface LoginAPIWithCookieResult {
+  interface LoginAPIWithTokenResult {
     code: number;
     msg: string;
     data: {
