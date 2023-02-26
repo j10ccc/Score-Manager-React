@@ -10,7 +10,7 @@ declare namespace PublicAPI {
     msg: string;
     data: {
       token: string;
-      name: string;
+      user: StudentAPI.Student | CoachAPI.Coach;
     };
   }
 
@@ -18,7 +18,7 @@ declare namespace PublicAPI {
     code: number;
     msg: string;
     data: {
-      name: string;
+      user: StudentAPI.Student | CoachAPI.Coach;
       role: "student" | "coach";
     };
   }

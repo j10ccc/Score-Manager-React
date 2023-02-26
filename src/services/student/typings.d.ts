@@ -3,6 +3,8 @@ declare namespace StudentAPI {
     id: number;
     username: string;
     name: string;
+    marjor: string;
+    year: string;
   }
 
   interface GetMyCoachesAPIResult {

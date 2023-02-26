@@ -9,24 +9,25 @@ import { history } from "@umijs/max";
  * @returns
  */
 export async function getInitialState(): Promise<{
-  name?: string;
+  name: string;
+  user: StudentAPI.Student | CoachAPI.Coach | undefined;
   role?: "student" | "coach";
 }> {
-  let name = undefined;
+  let user = undefined;
   let role = undefined;
   try {
     const res = await loginWithTokenAPI();
     if (res.code !== 200) throw new Error(res.msg);
-    name = res.data.name;
+    user = res.data.user;
     role = res.data.role;
   } catch (error) {
     console.log(error);
   }
 
   // FIXME: remove localStorage when login failed
-  if (name) window.localStorage.setItem("name", name);
+  if (user) window.localStorage.setItem("name", user.name);
   if (role) window.localStorage.setItem("role", role);
-  return { name, role };
+  return { name: user?.name || "", user, role };
 }
 
 export const layout: RunTimeLayoutConfig = () => {

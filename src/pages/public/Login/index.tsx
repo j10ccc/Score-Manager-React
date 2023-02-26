@@ -26,7 +26,10 @@ const LoginPage = () => {
       setLoading(true);
       const res = await loginAPI({ ...formData, role: loginRole });
       if (res.code === 200) {
-        const { name, token } = res.data;
+        const {
+          user: { name },
+          token,
+        } = res.data;
         setName(name);
         setToken(token);
         setRole(loginRole);

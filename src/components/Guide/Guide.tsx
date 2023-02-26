@@ -1,19 +1,17 @@
 import { Layout, Row, Typography } from "antd";
 import React from "react";
-import styles from "./Guide.less";
 
 interface Props {
-  name: string;
+  user: StudentAPI.Student & CoachAPI.Coach;
 }
 
 const Guide: React.FC<Props> = (props) => {
-  const { name } = props;
+  const { user } = props;
   return (
     <Layout>
       <Row>
-        <Typography.Title level={3} className={styles.title}>
-          你的姓名是 <strong>{name}</strong> ！
-        </Typography.Title>
+        <Typography.Title level={2}>欢迎！</Typography.Title>
+        <Typography.Title level={3}>{user.name}</Typography.Title>
       </Row>
     </Layout>
   );
