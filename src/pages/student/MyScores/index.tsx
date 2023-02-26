@@ -20,7 +20,7 @@ const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
     dataIndex: "value",
     width: 120,
     align: "center",
-    render: (data: string, record: any) => {
+    render: (data, record) => {
       const isNode = record.list !== undefined;
       return (
         <Text code={isNode}>
@@ -38,7 +38,7 @@ const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
   {
     title: "操作",
     width: 120,
-    render: (_: string, record: any) => {
+    render: (_, record) => {
       // TODO: check availiable applyTime
       if (record.list === undefined) return <ApplyLink record={record} />;
     },
@@ -50,18 +50,17 @@ const MyScoresPage = () => {
   const [scores, setScores] = useState<StudentAPI.ScoreNodeInterface[]>();
   const defaultTermInfo = useRef({
     year: new Date().getFullYear(),
-    term: 0,
   });
 
   const [selectedTermInfo, setSelectedTermInfo] = useState(
     defaultTermInfo.current
   );
 
-  const getScores = async (year: number, term: number) => {
+  const getScores = async (year: number) => {
     let list: StudentAPI.ScoreNodeInterface[] = [];
     try {
       setLoading(true);
-      const res = await getMyScoresAPI({ year, term });
+      const res = await getMyScoresAPI({ year });
       list = res.data?.list || [];
       list.forEach((item) => {
         fillScoreNodeData(item);
@@ -74,12 +73,12 @@ const MyScoresPage = () => {
     return list;
   };
 
-  const onTermChange = (e: { year: number; term: number }) => {
+  const onTermChange = (e: { year: number }) => {
     setSelectedTermInfo(e);
   };
 
   useEffect(() => {
-    getScores(selectedTermInfo.year, selectedTermInfo.term);
+    getScores(selectedTermInfo.year);
   }, [selectedTermInfo]);
 
   return (
@@ -102,7 +101,7 @@ const MyScoresPage = () => {
         dataSource={scores}
         expandable={{ childrenColumnName: "list" }}
         options={{
-          reload: () => getScores(selectedTermInfo.year, selectedTermInfo.term),
+          reload: () => getScores(selectedTermInfo.year),
         }}
       />
     </PageContainer>

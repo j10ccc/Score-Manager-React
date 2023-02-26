@@ -1,12 +1,12 @@
 import { ProTable, PageContainer } from "@ant-design/pro-components";
-import { getStudentAPI } from "@/services/coach/getStudentAPI";
+import { getStudentScoresAPI } from "@/services/coach/getStudentScoresAPI";
 import { useState, useEffect, useRef } from "react";
 import type { ProColumns } from "@ant-design/pro-components";
-import { Typography, Button } from "antd";
+import { Typography, Button, message } from "antd";
 import { getScoreStructureAPI } from "@/services/coach/getScoreStructureAPI";
 import {
   flattenScoresNodes,
-  scoreColumsTransfer,
+  scoreColumnsTransfer,
   scoreForestTransfer,
 } from "@/utils";
 import { omit } from "lodash-es";
@@ -15,9 +15,7 @@ import { submitScoresAPI } from "@/services/coach/submitScoresAPI";
 const { Link } = Typography;
 
 const ScoreManagerPage = () => {
-  const [scoreColumns, setScoreColumns] = useState<
-    StudentAPI.ScoreNodeInterface[]
-  >([]);
+  const [scoreColumns, setScoreColumns] = useState<ProColumns[]>([]);
   const [showEditor, setShowEditor] = useState(false);
   const formStore = useRef<
     StudentAPI.Student & {
@@ -28,8 +26,13 @@ const ScoreManagerPage = () => {
   useEffect(() => {
     getScoreStructureAPI().then((res) => {
       const struct = scoreForestTransfer(res.data.list);
-      const tmp = struct.map((node) => scoreColumsTransfer(node));
-      setScoreColumns(tmp);
+      const tmp = struct.map((node) => scoreColumnsTransfer(node));
+      setScoreColumns(
+        tmp.map((item) => ({
+          ...item,
+          hideInSearch: true,
+        }))
+      );
     });
   }, []);
 
@@ -43,7 +46,7 @@ const ScoreManagerPage = () => {
     setShowEditor(true);
   };
 
-  const handleEditFinish = (e: any) => {
+  const handleEditFinish = async (e: any) => {
     setShowEditor(false);
     const tmp: any = {
       target: e.username,
@@ -52,7 +55,13 @@ const ScoreManagerPage = () => {
     Object.entries(omit(e, ["username"])).forEach((item) => {
       tmp.scores.push({ index: item[0], value: item[1] });
     });
-    submitScoresAPI({ ...tmp });
+    try {
+      const res = await submitScoresAPI({ ...tmp });
+      if (res.code === 200) message.success("录入成功");
+      else throw new Error(res.msg);
+    } catch (e: any) {
+      message.error(e.message || "未知错误");
+    }
   };
 
   const handleEditorClose = () => {
@@ -63,6 +72,7 @@ const ScoreManagerPage = () => {
     {
       title: "姓名",
       dataIndex: "name",
+      hideInSearch: true,
       fixed: "left",
       width: 80,
     },
@@ -79,7 +89,7 @@ const ScoreManagerPage = () => {
       key: "option",
       fixed: "right",
       width: 60,
-      render: (_: string, record: any) => {
+      render: (_, record: any) => {
         return <Link onClick={() => handleUpdateScore(record)}>编辑</Link>;
       },
     },
@@ -88,13 +98,17 @@ const ScoreManagerPage = () => {
   return (
     <PageContainer ghost>
       <ProTable<StudentAPI.Student>
-        request={async (params: any) => {
-          const res = await getStudentAPI({
+        request={async (params) => {
+          console.log(params);
+          const res = await getStudentScoresAPI({
             page: params.current,
             size: params.pageSize,
+            username: params.username,
           });
           const tmp = res.data.list.map((item) => {
-            const flattenList = flattenScoresNodes(item.scores);
+            const flattenList = item.scores
+              ? flattenScoresNodes(item.scores)
+              : [];
             const newItem: any = omit(item, ["scores"]);
             flattenList.forEach((score) => {
               newItem[score.index] = score.value;
@@ -107,7 +121,7 @@ const ScoreManagerPage = () => {
             total: res.data.total,
           };
         }}
-        rowIndex="username"
+        rowKey="username"
         columns={columns}
         headerTitle="学生信息"
         toolBarRender={() => [

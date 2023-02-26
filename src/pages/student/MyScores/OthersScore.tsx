@@ -10,20 +10,13 @@ import { useState } from "react";
 
 type ScoreInfoType = {
   year: number;
-  term: number;
   target: string;
   name?: string;
   score?: number;
 };
 
 const OthersScore = () => {
-  // const [form] = Form.useForm<ScoreInfoType>();
-
   const yearOptions: Array<{ value: number; label: string }> = [];
-  const termOptions: Array<{ value: number; label: string }> = [
-    { value: 0, label: "上学期" },
-    { value: 1, label: "下学期" },
-  ];
   const year = new Date().getFullYear();
   for (let i = 0; i < 4; i++) {
     yearOptions.push({
@@ -34,15 +27,11 @@ const OthersScore = () => {
 
   const [scoreInfo, setScoreInfo] = useState<ScoreInfoType>();
 
-  const onFinish = async (formData: {
-    year: number;
-    term: number;
-    target: string;
-  }) => {
-    const { year, term, target } = formData;
+  const onFinish = async (formData: { year: number; target: string }) => {
+    const { year, target } = formData;
     try {
       const res = await getOthersScoresAPI(formData);
-      setScoreInfo({ ...res.data, year, term, target });
+      setScoreInfo({ ...res.data, year, target });
       message.success("查询成功");
     } catch (error) {
       message.error("查询失败");
@@ -54,25 +43,18 @@ const OthersScore = () => {
   return (
     <ModalForm<{
       year: number;
-      term: number;
       target: string;
     }>
       title="查询他人综测"
       trigger={<Button type="primary">查询他人成绩</Button>}
       onFinish={onFinish}
-      initialValues={{ year, term: 0 }}
+      initialValues={{ year }}
     >
       <ProFormGroup>
         <ProFormSelect
           name="year"
           label="学年"
           options={yearOptions}
-          rules={[{ required: true }]}
-        />
-        <ProFormSelect
-          name="term"
-          label="学期"
-          options={termOptions}
           rules={[{ required: true }]}
         />
         <ProFormText name="target" label="学号" rules={[{ required: true }]} />
@@ -82,9 +64,6 @@ const OthersScore = () => {
       ) : (
         <Descriptions title="目标成绩" column={3}>
           <Descriptions.Item label="学年">{scoreInfo?.year}</Descriptions.Item>
-          <Descriptions.Item label="学期" span={2}>
-            {scoreInfo?.term === 0 ? "上" : "下"}
-          </Descriptions.Item>
           <Descriptions.Item label="学号">
             {scoreInfo?.target}
           </Descriptions.Item>

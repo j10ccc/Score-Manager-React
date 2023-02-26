@@ -1,4 +1,4 @@
-import scoreColumsTransfer from "./scoreColumnsTransfer";
+import scoreColumnsTransfer from "./scoreColumnsTransfer";
 import flattenScoresNodes from "./flattenScoresNodes";
 import scoreForestTransfer from "./scoreForestTransfer";
 
@@ -18,4 +18,4 @@ export const createGuid = () => {
   return `${s4()}-${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}`;
 };
 
-export { scoreColumsTransfer, flattenScoresNodes, scoreForestTransfer };
+export { scoreColumnsTransfer, flattenScoresNodes, scoreForestTransfer };

@@ -30,10 +30,6 @@ const MyApplicationsPage = () => {
       dataIndex: "label",
     },
     {
-      title: "学期",
-      dataIndex: "term",
-    },
-    {
       title: "学年",
       dataIndex: "year",
     },

@@ -5,13 +5,19 @@ interface IResponse<T> {
 }
 
 declare namespace CoachAPI {
-  interface GetStudentData {
+  interface Coach {
+    id: number;
+    username: string; // 工号
+    name: string;
+  }
+
+  interface GetStudentScoresData {
     page?: number;
     size?: number;
     username?: string;
   }
 
-  type GetStudentResult = IResponse<{
+  type GetStudentScoresResult = IResponse<{
     list: Array<
       StudentAPI.Student & { scores: StudentAPI.ScoreNodeInterface[] }
     >;
@@ -59,5 +65,17 @@ declare namespace CoachAPI {
 
   type SubmitApprovesResult = IResponse<{
     data: null;
+  }>;
+
+  interface GetStudentData {
+    username: string;
+  }
+
+  type GetStudentResult = IResponse<{
+    student: {
+      id: number;
+      username: string;
+      major: string;
+    };
   }>;
 }
