@@ -1,9 +1,10 @@
 import { request } from "@umijs/max";
 
 export const applyScoreAPI = (data: StudentAPI.ApplyScoreAPIData) => {
+  const token = window.localStorage.getItem("token") || "";
   return request<StudentAPI.ApplyScoreAPIResult>("/api/student/applyScore", {
     method: "POST",
-    headers: { "Content-Type": "multipart/form-data" },
+    headers: { Authorization: token },
     data,
     withCredentials: true,
   });

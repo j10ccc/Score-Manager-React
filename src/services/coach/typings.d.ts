@@ -59,7 +59,7 @@ declare namespace CoachAPI {
     applications: Array<{
       target: string; // 审批id
       reason?: string; // 理由
-      state: StudentAPI.ApplicationState; // 审批状态
+      state: StudentAPI.ApplicationState | "withdraw"; // 审批状态
     }>;
   }
 
