@@ -8,26 +8,26 @@ import { Typography } from "antd";
 const { Link } = Typography;
 
 type PropsType = {
-  onReject: (target: string, reason: string) => void;
+  onReject: (target: number, reason: string) => void;
   record: StudentAPI.ApplicationRecord;
 };
 
 const RejectForm = (props: PropsType) => {
   const { onReject, record } = props;
   // TODO: 理由库
+  console.log(record);
 
   return (
     <ModalForm<{ reason: string }>
       title="驳回申报"
       trigger={<Link> 驳回 </Link>}
       width={500}
-      bordered
       onFinish={(value: any) => {
         onReject(record.id, value.reason);
         return true;
       }}
     >
-      <ProFormGroup layout="vertical">
+      <ProFormGroup>
         <ProFormText label="学号" value={record.username} readonly />
         <ProFormText label="申请项目" value={record.label} readonly />
         <ProFormText label="申请分数" value={record.value} readonly />

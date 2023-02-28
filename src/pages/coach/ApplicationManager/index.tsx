@@ -1,4 +1,8 @@
-import { PageContainer, ProTable } from "@ant-design/pro-components";
+import {
+  PageContainer,
+  ProColumns,
+  ProTable,
+} from "@ant-design/pro-components";
 import { Typography, Button, Popconfirm } from "antd";
 import RejectForm from "./RejectForm";
 import { getApplyListAPI } from "@/services/coach/getApplyListAPI";
@@ -7,10 +11,10 @@ import { submitApprovesAPI } from "@/services/coach/submitApprove";
 const { Link } = Typography;
 
 const ApplicationManagerPage = () => {
-  const [selectedRowKeys, setSelectedRowKeys] = useState<string[]>([]);
+  const [selectedRowKeys, setSelectedRowKeys] = useState<number[]>([]);
   const rowSelection = {
     selectedRowKeys,
-    onChange: (keys: string[]) => {
+    onChange: (keys: number[]) => {
       setSelectedRowKeys(keys);
     },
   };
@@ -18,9 +22,15 @@ const ApplicationManagerPage = () => {
   const handleApprove = (targets: StudentAPI.ApplicationRecord["id"][]) => {
     submitApprovesAPI({
       applications: targets.map((item) => ({
-        target: item,
+        target: item.toString(),
         state: "approved",
       })),
+    });
+  };
+
+  const handleWithdraw = (target: StudentAPI.ApplicationRecord["id"]) => {
+    submitApprovesAPI({
+      applications: [{ target: target.toString(), state: "withdraw" }],
     });
   };
 
@@ -32,7 +42,7 @@ const ApplicationManagerPage = () => {
     submitApprovesAPI({
       applications: [
         {
-          target,
+          target: target.toString(),
           state: "rejected",
           reason,
         },
@@ -44,11 +54,11 @@ const ApplicationManagerPage = () => {
     console.log(record);
   };
 
-  const columns = [
-    { title: "ID", dataIndex: "id", width: 120, fixed: "left" },
+  const columns: ProColumns<StudentAPI.ApplicationRecord[]> = [
+    { title: "ID", dataIndex: "id", width: 80, fixed: "left" },
     { title: "状态", dataIndex: "state", width: 80 },
     { title: "学号", dataIndex: "username", width: 120 },
-    { title: "申报项目", dataIndex: "label", width: 200 },
+    { title: "申报项目", dataIndex: "label", width: 300 },
     { title: "分数", dataIndex: "value", width: 80 },
     {
       title: "理由",
@@ -64,16 +74,27 @@ const ApplicationManagerPage = () => {
       fixed: "right",
       valueType: "option",
       render: (_: string, record: StudentAPI.ApplicationRecord) => [
-        <>{/** TODO: depend state display */}</>,
-        <Popconfirm
-          key="approve"
-          title="批准申报"
-          description="确认批准这条申报?"
-          onConfirm={() => handleApprove([record.id])}
-        >
-          <Link> 批准 </Link>
-        </Popconfirm>,
+        record.state === "pending" ? (
+          <Popconfirm
+            key="approve"
+            title="批准申报"
+            description="确认批准这条申报?"
+            onConfirm={() => handleApprove([record.id])}
+          >
+            <Link> 批准 </Link>
+          </Popconfirm>
+        ) : null,
         <RejectForm key="reject" record={record} onReject={handleReject} />,
+        record.state !== "pending" ? (
+          <Popconfirm
+            key="approve"
+            title="撤销申报"
+            description="确认撤销这条申报?"
+            onConfirm={() => handleWithdraw(record.id)}
+          >
+            <Link type="danger">撤销</Link>
+          </Popconfirm>
+        ) : null,
         <Link key="detail" onClick={() => handleShowDetail(record)}>
           查看
         </Link>,
@@ -95,7 +116,6 @@ const ApplicationManagerPage = () => {
             page: params.current,
             size: params.pageSize,
           });
-          console.log(res.data.list);
 
           return {
             data: res.data.list,

@@ -11,7 +11,11 @@ declare namespace StudentAPI {
     code: number;
     msg: string;
     data?: {
-      list: Array<{ name: string; id: string }>;
+      list: Array<{
+        name: string;
+        /** 辅导员工号 */
+        id: string;
+      }>;
     };
   }
 
@@ -33,6 +37,8 @@ declare namespace StudentAPI {
     index: string;
     /** 分数 */
     value?: number;
+    /** 学年 */
+    year: number;
   }
 
   interface ScoreNodeInterface extends Score {
@@ -95,7 +101,7 @@ declare namespace StudentAPI {
     | "failed";
 
   interface ApplicationRecord extends Application {
-    id: string;
+    id: number;
     time: string;
     state: ApplicationState;
     rejectReason?: string; // 辅导员驳回理由
@@ -104,10 +110,11 @@ declare namespace StudentAPI {
   }
 
   interface ApplyScoreAPIData {
-    name: string;
+    index: string;
     value: string;
-    content?: string;
-    files?: any;
+    content?: string[];
+    files?: string[];
+    year: string;
   }
 
   interface ApplyScoreAPIResult {

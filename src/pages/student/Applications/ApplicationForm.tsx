@@ -32,7 +32,9 @@ const ApplicationForm = (props: PropsType) => {
     try {
       const res = await applyScoreAPI({
         ...formData,
-        name: initialData.index,
+        contents: formData.contents.map((item: any) => item.content),
+        year: initialData.year.toString(),
+        index: initialData.index,
       });
       if (res.code === 200) message.success("申请成功");
       else throw new Error();

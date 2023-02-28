@@ -6,6 +6,7 @@ type ApplicationDraft = Application & { guid: string };
 
 interface StudentStore {
   applications: Application[];
+  year: number;
 }
 
 const useStudent = () => {

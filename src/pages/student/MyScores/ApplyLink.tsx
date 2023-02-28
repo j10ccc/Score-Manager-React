@@ -8,11 +8,11 @@ type PropsType = {
 
 const ApplyLink = (props: PropsType) => {
   const { record } = props;
-  const { setMyApplyTemp, selectTermInfo } = useModel("student");
+  const { setMyApplyTemp } = useModel("student");
 
   const onClick = () => {
     setMyApplyTemp({
-      ...selectTermInfo,
+      year: record.year,
       label: record.label,
       index: record.index,
       top: record.top!,
@@ -20,7 +20,11 @@ const ApplyLink = (props: PropsType) => {
     history.push("myscores/form");
   };
 
-  return <Link onClick={onClick}>申报</Link>;
+  return (
+    <Link onClick={onClick} disabled={record.value !== undefined}>
+      申报
+    </Link>
+  );
 };
 
 export default ApplyLink;
