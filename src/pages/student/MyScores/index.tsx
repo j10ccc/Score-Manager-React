@@ -7,6 +7,8 @@ import { useEffect, useState, useRef } from "react";
 import TermSelector from "@/components/TermSelector";
 import OthersScore from "./OthersScore";
 import ApplyLink from "./ApplyLink";
+import { getScoreStructureAPI } from "@/services/coach/getScoreStructureAPI";
+import fillScoreStructWithScores from "@/utils/fillScoreStructWithScores";
 const { Text } = Typography;
 
 const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
@@ -21,11 +23,20 @@ const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
     width: 120,
     align: "center",
     render: (data, record) => {
-      const isNode = record.list !== undefined;
+      console.log(record);
+      const isBranchNode = record.list !== undefined;
       return (
-        <Text code={isNode}>
-          <Text type={record.value! >= 0 ? "success" : "danger"}>{data}</Text>
-          {record.top! > 0 && <Text type="secondary"> / {record.top}</Text>}
+        <Text code={isBranchNode}>
+          {record.value !== undefined ? (
+            <>
+              <Text type={record.value >= 0 ? "success" : "danger"}>
+                {data}
+              </Text>
+              {record.top! > 0 && <Text type="secondary"> / {record.top}</Text>}
+            </>
+          ) : (
+            <Text type="warning">未申报</Text>
+          )}
         </Text>
       );
     },
@@ -61,7 +72,11 @@ const MyScoresPage = () => {
     try {
       setLoading(true);
       const res = await getMyScoresAPI({ year });
-      list = res.data?.list || [];
+      const {
+        data: { list: struct },
+      } = await getScoreStructureAPI();
+      list = fillScoreStructWithScores(struct, res.data?.list || []);
+
       list.forEach((item) => {
         fillScoreNodeData(item);
       });
