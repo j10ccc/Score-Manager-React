@@ -132,4 +132,14 @@ declare namespace StudentAPI {
       list: ApplicationRecord[];
     };
   }
+
+  interface SubmitComplainData {
+    id: string;
+    content: string;
+  }
+
+  interface SubmitComplainResult {
+    code: number;
+    msg: string;
+  }
 }

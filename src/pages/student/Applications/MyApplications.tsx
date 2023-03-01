@@ -1,7 +1,10 @@
 import { getMyApplyHistoryAPI } from "@/services/student";
+import { submitComplainAPI } from "@/services/student/submitComplainAPI";
 import {
+  ModalForm,
   PageContainer,
   ProColumns,
+  ProFormTextArea,
   ProTable,
 } from "@ant-design/pro-components";
 import { Drawer, Space, Tag } from "antd";
@@ -9,9 +12,12 @@ import { ReactNode, useRef, useState } from "react";
 import ApplicationPreview from "./ApplicationPreview";
 
 export const StateRenderMap = {
+  start: { label: "开始", color: "default" },
   pending: { label: "申请中", color: "orange" },
   rejected: { label: "已驳回", color: "red" },
   approved: { label: "已审批", color: "green" },
+  complain: { label: "已申诉", color: "orange" },
+  failed: { label: "已结束", color: "red" },
 };
 
 const MyApplicationsPage = () => {
@@ -56,7 +62,20 @@ const MyApplicationsPage = () => {
         return (
           <Space>
             <a onClick={() => handleShowPreview(record)}>查看</a>
-            {record.state === "rejected" && <a>申诉</a>}
+            {record.state === "rejected" && (
+              <ModalForm
+                trigger={<a>申诉</a>}
+                onFinish={async (values) => {
+                  submitComplainAPI({
+                    content: values.content,
+                    id: record.id.toString(),
+                  });
+                  return true;
+                }}
+              >
+                <ProFormTextArea name="content" label="申诉内容" />
+              </ModalForm>
+            )}
           </Space>
         );
       },

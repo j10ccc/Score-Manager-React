@@ -30,7 +30,7 @@ const dfs = (node: StudentAPI.ScoreNodeInterface): ReactNode => {
         name={node.index}
         label={node.label}
         fieldProps={{ precision: 1 }}
-        max={node.top! > 0 ? node.top : false}
+        max={node.top! > 0 ? node.top : undefined}
         placeholder={node.top! > 0 ? `最高分 ${node.top} 分` : undefined}
         width={200}
       />
@@ -58,7 +58,6 @@ const ScoresEditor = (props: PropsType) => {
           name="username"
           rules={[{ required: true, message: "请输入学号" }]}
         />
-        <ProFormText label="姓名" value="j10c" readonly />
       </ProFormGroup>
       {formStructure?.map((item) => {
         return dfs(item);

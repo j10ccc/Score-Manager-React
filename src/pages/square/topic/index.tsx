@@ -42,7 +42,7 @@ const TopicPage = () => {
 
   return (
     <PageContainer>
-      <Space direction="vertical">
+      <Space direction="vertical" style={{ width: "100%" }}>
         <ProCard title={data?.topic.title} extra={data?.topic.time}>
           <Viewer value={data?.topic.content || ""} />
         </ProCard>
@@ -55,7 +55,7 @@ const TopicPage = () => {
           </ProForm>
         </ProCard>
         <ProList
-          headerTitle={`全部留言 (${data?.topic.commentList?.length}条)`}
+          headerTitle={`全部留言 (${data?.topic.commentList?.length || 0}条)`}
           itemLayout="vertical"
           dataSource={data?.topic.commentList}
           metas={{

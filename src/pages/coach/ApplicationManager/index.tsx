@@ -74,7 +74,7 @@ const ApplicationManagerPage = () => {
       fixed: "right",
       valueType: "option",
       render: (_: string, record: StudentAPI.ApplicationRecord) => [
-        record.state === "pending" ? (
+        record.state === "pending" || record.state === "complain" ? (
           <Popconfirm
             key="approve"
             title="批准申报"

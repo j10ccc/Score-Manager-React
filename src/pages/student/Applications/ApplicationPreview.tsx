@@ -27,7 +27,7 @@ const ApplicationPreview = (props: PropsType) => {
 
   const initialProcesses = () => {
     if (record === undefined) return;
-    if (record?.complain !== undefined) {
+    if (record?.complain !== undefined && record.complain !== "") {
       processes.push("rejected");
       processes.push("complain");
       processes.push("pending");
@@ -46,8 +46,8 @@ const ApplicationPreview = (props: PropsType) => {
   else
     return (
       <>
-        <Descriptions size="small" bordered column={3} layout="vertical">
-          <Descriptions.Item label="申报项目" span={3}>
+        <Descriptions size="small" bordered column={4} layout="vertical">
+          <Descriptions.Item label="申报项目" span={4}>
             <Space>
               {record.label}
               <Tag color={StateRenderMap[record.state].color}>
@@ -55,10 +55,10 @@ const ApplicationPreview = (props: PropsType) => {
               </Tag>
             </Space>
           </Descriptions.Item>
-          <Descriptions.Item label="申报ID" span={2}>
+          <Descriptions.Item label="申报ID" span={1}>
             {record.id}
           </Descriptions.Item>
-          <Descriptions.Item label="申报时间">
+          <Descriptions.Item label="申报时间" span={1}>
             {new Date(parseInt(record.time)).toLocaleString("zh-CN")}
           </Descriptions.Item>
           <Descriptions.Item label="学年" span={1}>
@@ -68,13 +68,13 @@ const ApplicationPreview = (props: PropsType) => {
             {record.value}
           </Descriptions.Item>
           {record.content !== undefined && record.content.length !== 0 && (
-            <Descriptions.Item label="具体内容" span={3}>
+            <Descriptions.Item label="具体内容" span={4}>
               {record.content?.map((item, index) => (
                 <li key={index}> {item} </li>
               ))}
             </Descriptions.Item>
           )}
-          <Descriptions.Item label="进度">
+          <Descriptions.Item label="进度" span={4}>
             <Timeline style={{ paddingTop: "12px" }}>
               {processes.map((item, index) => {
                 return (
