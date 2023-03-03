@@ -78,4 +78,12 @@ declare namespace CoachAPI {
       major: string;
     };
   }>;
+
+  type GetRejectReasonsResult = IResponse<{
+    list: string[];
+  }>;
+
+  interface SubmitRejectReasonsData {
+    reasons: string[];
+  }
 }
