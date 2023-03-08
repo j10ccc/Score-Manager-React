@@ -22,4 +22,14 @@ declare namespace PublicAPI {
       role: "student" | "coach";
     };
   }
+
+  interface ChangePasswordData {
+    old: string;
+    new: string;
+  }
+
+  interface ChangePasswordResult {
+    code: number;
+    msg: string;
+  }
 }
