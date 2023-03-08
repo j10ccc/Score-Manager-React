@@ -10,6 +10,7 @@ import { DeleteOutlined } from "@ant-design/icons";
 import { getRejectReasonsAPI } from "@/services/coach/getRejectReasons";
 import { useRequest } from "@umijs/max";
 import { useState, useRef } from "react";
+import { SubmitRejectReasonsAPI } from "@/services/coach/submitRejectReasons";
 const { Link, Text } = Typography;
 
 type PropsType = {
@@ -27,21 +28,45 @@ const RejectForm = (props: PropsType) => {
     setReasonStoreOpen(!isReasonStoreOpen);
   };
 
-  const { data: reasons } = useRequest(getRejectReasonsAPI);
+  const { data: reasons, run: getRejectReasons } = useRequest(
+    getRejectReasonsAPI,
+    {
+      manual: true,
+    }
+  );
 
-  const handleDeleteReasons = (index: number) => {
-    const tmp = reasons?.list;
+  const handleDeleteReasons = async (index: number) => {
+    const tmp = reasons?.list || [];
     if (tmp) tmp.splice(index, 1);
-    console.log(tmp);
+    const res = await SubmitRejectReasonsAPI({
+      reasons: tmp,
+    });
+    if (res.code === 200) getRejectReasons();
+  };
+
+  const handleSelectReason = (reason: string) => {
+    console.log(reason);
+    formRef.current?.setFieldValue("reason", reason);
   };
 
   return (
     <ModalForm<{ reason: string }>
       formRef={formRef}
       title="驳回申报"
-      trigger={<Link> 驳回 </Link>}
+      trigger={
+        <Link type="danger" strong>
+          {" "}
+          驳回{" "}
+        </Link>
+      }
       width={isReasonStoreOpen ? 800 : 500}
+      initialValues={record}
+      onOpenChange={(open) => open && getRejectReasons()}
       onFinish={(value: any) => {
+        if (isSaveReason.current)
+          SubmitRejectReasonsAPI({
+            reasons: [...(reasons?.list || []), value.reason],
+          });
         onReject(record.id, value.reason);
         return true;
       }}
@@ -49,9 +74,9 @@ const RejectForm = (props: PropsType) => {
       <Row gutter={16}>
         <Col span={isReasonStoreOpen ? 12 : 24}>
           <ProFormGroup>
-            <ProFormText label="学号" value={record.username} readonly />
-            <ProFormText label="申请项目" value={record.label} readonly />
-            <ProFormText label="申请分数" value={record.value} readonly />
+            <ProFormText label="学号" name="username" readonly />
+            <ProFormText label="申请项目" name="label" readonly />
+            <ProFormText label="申请分数" name="value" readonly />
           </ProFormGroup>
           <ProFormTextArea
             name="reason"
@@ -82,15 +107,14 @@ const RejectForm = (props: PropsType) => {
                       type="danger"
                       onClick={() => handleDeleteReasons(index)}
                     >
-                      {" "}
-                      <DeleteOutlined />{" "}
+                      <DeleteOutlined />
                     </Link>
                     <Text
                       ellipsis={{ tooltip: true }}
                       style={{ width: "280px" }}
+                      onClick={() => handleSelectReason(item)}
                     >
-                      {" "}
-                      {item}{" "}
+                      {item}
                     </Text>
                   </Space>
                 </List.Item>
