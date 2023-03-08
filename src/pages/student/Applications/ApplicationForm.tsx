@@ -36,15 +36,21 @@ const ApplicationForm = (props: PropsType) => {
         year: initialData.year.toString(),
         index: initialData.index,
       });
-      if (res.code === 200) message.success("申请成功");
-      else throw new Error();
+      if (res.code === 200) {
+        message.success("申请成功");
+        if (initialData.guid) {
+          // 在 草稿箱
+          deleteMyApplyDraft(initialData.guid);
+        } else {
+          history.back();
+        }
+      } else throw new Error();
     } catch (error) {
       message.error("申请失败");
     }
   };
 
   const handleDraft = () => {
-    console.log(formRef.current?.getFieldValue("contents"));
     formRef.current?.validateFieldsReturnFormatValue?.().then((values) => {
       addMyApplyDraft({
         guid: createGuid(),

@@ -1,4 +1,8 @@
-import { ProTable, PageContainer } from "@ant-design/pro-components";
+import {
+  ProTable,
+  PageContainer,
+  ActionType,
+} from "@ant-design/pro-components";
 import { getStudentScoresAPI } from "@/services/coach/getStudentScoresAPI";
 import { useState, useEffect, useRef } from "react";
 import type { ProColumns } from "@ant-design/pro-components";
@@ -20,8 +24,9 @@ const ScoreManagerPage = () => {
   const formStore = useRef<
     StudentAPI.Student & {
       [key: string]: StudentAPI.Score;
-    }
+    } & { year: string }
   >();
+  const actionRef = useRef<ActionType>();
 
   useEffect(() => {
     getScoreStructureAPI().then((res) => {
@@ -48,17 +53,21 @@ const ScoreManagerPage = () => {
 
   const handleEditFinish = async (e: any) => {
     setShowEditor(false);
+
     const tmp: any = {
       target: e.username,
+      year: parseInt(e.year),
       scores: [],
     };
-    Object.entries(omit(e, ["username"])).forEach((item) => {
+    Object.entries(omit(e, ["username", "year"])).forEach((item) => {
       tmp.scores.push({ index: item[0], value: item[1] });
     });
     try {
       const res = await submitScoresAPI({ ...tmp });
-      if (res.code === 200) message.success("录入成功");
-      else throw new Error(res.msg);
+      if (res.code === 200) {
+        message.success("录入成功");
+        actionRef.current?.reload();
+      } else throw new Error(res.msg);
     } catch (e: any) {
       message.error(e.message || "未知错误");
     }
@@ -99,7 +108,6 @@ const ScoreManagerPage = () => {
     <PageContainer ghost>
       <ProTable<StudentAPI.Student>
         request={async (params) => {
-          console.log(params);
           const res = await getStudentScoresAPI({
             page: params.current,
             size: params.pageSize,
@@ -122,6 +130,7 @@ const ScoreManagerPage = () => {
           };
         }}
         rowKey="username"
+        actionRef={actionRef}
         columns={columns}
         headerTitle="学生信息"
         toolBarRender={() => [

@@ -1,10 +1,11 @@
 import { getScoreStructureAPI } from "@/services/coach/getScoreStructureAPI";
-import { ReactNode, useEffect, useState } from "react";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import {
   ProForm,
   ProFormText,
   ProFormDigit,
   ProFormGroup,
+  ProFormInstance,
 } from "@ant-design/pro-components";
 import { scoreForestTransfer } from "@/utils";
 
@@ -40,6 +41,7 @@ const dfs = (node: StudentAPI.ScoreNodeInterface): ReactNode => {
 
 const ScoresEditor = (props: PropsType) => {
   const { initialData, onFinish } = props;
+  const formRef = useRef<ProFormInstance<typeof initialData>>();
 
   const [formStructure, setFormStructure] =
     useState<StudentAPI.ScoreNodeInterface[]>();
@@ -50,14 +52,24 @@ const ScoresEditor = (props: PropsType) => {
     });
   }, []);
 
+  useEffect(() => {
+    formRef.current?.resetFields();
+    formRef.current?.setFieldsValue(initialData);
+  }, [initialData]);
+
   return (
-    <ProForm initialValues={initialData} onFinish={onFinish} layout="vertical">
+    <ProForm<typeof initialData>
+      formRef={formRef}
+      onFinish={onFinish}
+      layout="vertical"
+    >
       <ProFormGroup>
         <ProFormText
           label="学号"
           name="username"
           rules={[{ required: true, message: "请输入学号" }]}
         />
+        <ProFormText label="学年" name="year" readonly />
       </ProFormGroup>
       {formStructure?.map((item) => {
         return dfs(item);

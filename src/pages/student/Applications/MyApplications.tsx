@@ -10,15 +10,7 @@ import {
 import { Drawer, Space, Tag } from "antd";
 import { ReactNode, useRef, useState } from "react";
 import ApplicationPreview from "./ApplicationPreview";
-
-export const StateRenderMap = {
-  start: { label: "开始", color: "default" },
-  pending: { label: "申请中", color: "orange" },
-  rejected: { label: "已驳回", color: "red" },
-  approved: { label: "已审批", color: "green" },
-  complain: { label: "已申诉", color: "orange" },
-  failed: { label: "已结束", color: "red" },
-};
+import { ApplicationState } from "@/constants";
 
 const MyApplicationsPage = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
@@ -49,8 +41,8 @@ const MyApplicationsPage = () => {
       dataIndex: "state",
       // @ts-ignore
       render: (text: "pending" | "rejected" | "approved") => (
-        <Tag color={StateRenderMap[text].color}>
-          {StateRenderMap[text].label}
+        <Tag color={ApplicationState[text].color}>
+          {ApplicationState[text].label}
         </Tag>
       ),
     },

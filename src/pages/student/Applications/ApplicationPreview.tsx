@@ -1,24 +1,9 @@
+import { ApplicationProgress } from "@/constants";
 import { Descriptions, Empty, Space, Tag, Timeline } from "antd";
-import { StateRenderMap } from "./MyApplications";
+import { ApplicationState } from "@/constants";
 
 type PropsType = {
   record?: StudentAPI.ApplicationRecord;
-};
-
-type ProgressType = {
-  label: string;
-  color?: "red" | "orange" | "green";
-};
-
-const ApplicationProgress: {
-  [key: string]: ProgressType;
-} = {
-  start: { label: "提交申报" },
-  pending: { label: "等待审批", color: "orange" },
-  rejected: { label: "已驳回", color: "red" },
-  approved: { label: "已审批", color: "green" },
-  complain: { label: "提交申诉" },
-  failed: { label: "申报关闭", color: "red" },
 };
 
 const ApplicationPreview = (props: PropsType) => {
@@ -50,8 +35,8 @@ const ApplicationPreview = (props: PropsType) => {
           <Descriptions.Item label="申报项目" span={4}>
             <Space>
               {record.label}
-              <Tag color={StateRenderMap[record.state].color}>
-                {StateRenderMap[record.state].label}
+              <Tag color={ApplicationState[record.state].color}>
+                {ApplicationState[record.state].label}
               </Tag>
             </Space>
           </Descriptions.Item>

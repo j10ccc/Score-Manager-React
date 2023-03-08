@@ -5,7 +5,6 @@ import { Empty, Tabs } from "antd";
 
 const ApplicationsPage = () => {
   const { myApplyDrafts } = useModel("student");
-  console.log(myApplyDrafts);
 
   return (
     <PageContainer ghost>
