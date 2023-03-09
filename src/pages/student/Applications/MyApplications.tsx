@@ -1,6 +1,7 @@
 import { getMyApplyHistoryAPI } from "@/services/student";
 import { submitComplainAPI } from "@/services/student/submitComplainAPI";
 import {
+  ActionType,
   ModalForm,
   PageContainer,
   ProColumns,
@@ -16,6 +17,7 @@ const MyApplicationsPage = () => {
   const [openDrawer, setOpenDrawer] = useState(false);
   const [previewData, setPreviewData] =
     useState<StudentAPI.ApplicationRecord>();
+  const actionRef = useRef<ActionType>();
 
   const handleShowPreview = (data: StudentAPI.ApplicationRecord) => {
     setOpenDrawer(true);
@@ -58,10 +60,13 @@ const MyApplicationsPage = () => {
               <ModalForm
                 trigger={<a>申诉</a>}
                 onFinish={async (values) => {
-                  submitComplainAPI({
+                  const res = await submitComplainAPI({
                     content: values.content,
                     id: record.id.toString(),
                   });
+                  if (res.code === 200) {
+                    actionRef.current?.reload();
+                  }
                   return true;
                 }}
               >
@@ -91,6 +96,7 @@ const MyApplicationsPage = () => {
       <ProTable<StudentAPI.ApplicationRecord>
         headerTitle="所有申请"
         columns={columns.current}
+        actionRef={actionRef}
         request={async () => {
           return {
             data: await getMyApplyHistory(),

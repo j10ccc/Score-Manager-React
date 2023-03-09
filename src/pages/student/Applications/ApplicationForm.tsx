@@ -73,7 +73,7 @@ const ApplicationForm = (props: PropsType) => {
       <Descriptions title="基本信息" column={1}>
         <Descriptions.Item label="学年">{dataSource.year}</Descriptions.Item>
         <Descriptions.Item label="申请项目">
-          {dataSource.index}
+          {dataSource.label}
         </Descriptions.Item>
       </Descriptions>
       <ProForm

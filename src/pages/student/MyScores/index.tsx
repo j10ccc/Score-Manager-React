@@ -23,7 +23,6 @@ const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
     width: 120,
     align: "center",
     render: (data, record) => {
-      console.log(record);
       const isBranchNode = record.list !== undefined;
       return (
         <Text code={isBranchNode}>
@@ -51,7 +50,9 @@ const columns: ProColumns<StudentAPI.ScoreNodeInterface>[] = [
     width: 120,
     render: (_, record) => {
       // TODO: check availiable applyTime
-      if (record.list === undefined) return <ApplyLink record={record} />;
+      if (record.list === undefined) {
+        return <ApplyLink record={record} />;
+      }
     },
   },
 ];
@@ -75,7 +76,7 @@ const MyScoresPage = () => {
       const {
         data: { list: struct },
       } = await getScoreStructureAPI();
-      list = fillScoreStructWithScores(struct, res.data?.list || []);
+      list = fillScoreStructWithScores(struct, res.data?.list || [], year);
 
       list.forEach((item) => {
         fillScoreNodeData(item);

@@ -2,10 +2,10 @@ import scoreForestTransfer from "./scoreForestTransfer";
 
 const fillScoreStructWithScores = (
   struct: StudentAPI.ScoreNodeInterface[],
-  scores: StudentAPI.Score[]
+  scores: StudentAPI.Score[],
+  year: number
 ) => {
   const result = scoreForestTransfer(struct);
-  let year = new Date().getFullYear();
 
   const scoresMap: {
     [key: string]: StudentAPI.Score;
@@ -20,7 +20,6 @@ const fillScoreStructWithScores = (
         dfs(item);
       });
     } else {
-      year = scoresMap[node.index]?.year || year;
       node.value = scoresMap[node.index]?.value;
       node.year = scoresMap[node.index]?.year || year;
     }

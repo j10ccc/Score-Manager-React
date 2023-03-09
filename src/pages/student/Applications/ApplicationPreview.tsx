@@ -44,7 +44,7 @@ const ApplicationPreview = (props: PropsType) => {
             {record.id}
           </Descriptions.Item>
           <Descriptions.Item label="申报时间" span={1}>
-            {new Date(parseInt(record.time)).toLocaleString("zh-CN")}
+            {new Date(record.time).toLocaleString("zh-CN")}
           </Descriptions.Item>
           <Descriptions.Item label="学年" span={1}>
             {record.year}
