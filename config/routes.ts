@@ -58,6 +58,13 @@ const coachRoutes = [
     wrappers: ["@/wrappers/Auth"],
     access: "canSeeCoach",
   },
+  {
+    name: "建议箱",
+    path: "/coach/myadvice",
+    component: "./coach/MyAdvice",
+    wrappers: ["@/wrappers/Auth"],
+    access: "canSeeCoach",
+  },
 ];
 
 export const routes = [

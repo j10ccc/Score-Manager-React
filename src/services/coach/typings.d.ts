@@ -11,6 +11,13 @@ declare namespace CoachAPI {
     name: string;
   }
 
+  interface Advice {
+    content: string;
+    coachId: string;
+    studentId?: string;
+    studentName?: string;
+  }
+
   interface GetStudentScoresData {
     page?: number;
     size?: number;
@@ -86,4 +93,8 @@ declare namespace CoachAPI {
   interface SubmitRejectReasonsData {
     reasons: string[];
   }
+
+  type GetMyAdviceResult = IResponse<{
+    advice: Advice[];
+  }>;
 }

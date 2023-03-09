@@ -1,9 +1,10 @@
-import { useModel } from "@umijs/max";
+import { Link, useAccess, useModel } from "@umijs/max";
 import { changePasswordAPI } from "@/services/public/changePasswordAPI";
-import { Col, Layout, message, Row, Typography } from "antd";
+import { Col, Layout, message, Row, Space, Typography } from "antd";
 import React from "react";
 import ChangePasswordForm from "../ChangePasswordForm";
 import { history } from "@umijs/max";
+import { Access } from "@umijs/max";
 
 interface Props {
   user: StudentAPI.Student & CoachAPI.Coach;
@@ -12,6 +13,8 @@ interface Props {
 const Guide: React.FC<Props> = (props) => {
   const { user } = props;
   const { clearSystemStore } = useModel("global");
+  const access = useAccess();
+  console.log(access.canSeeCoach);
 
   const handleChangePassword = async (formData: {
     old: string;
@@ -37,17 +40,23 @@ const Guide: React.FC<Props> = (props) => {
       return false;
     }
   };
+
   return (
     <Layout>
       <Row align="middle" justify="space-between">
         <Col>
-          <Row>
+          <Space align="baseline">
             <Typography.Title level={2}>欢迎！</Typography.Title>
             <Typography.Title level={3}>{user.name}</Typography.Title>
-          </Row>
+          </Space>
         </Col>
-        <Col span={2}>
-          <ChangePasswordForm onFinish={handleChangePassword} />
+        <Col span={3}>
+          <Space>
+            <Access accessible={access.canSeeCoach}>
+              <Link to="/coach/myadvice">建议箱</Link>
+            </Access>
+            <ChangePasswordForm onFinish={handleChangePassword} />
+          </Space>
         </Col>
       </Row>
     </Layout>
