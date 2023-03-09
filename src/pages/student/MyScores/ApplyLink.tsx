@@ -1,5 +1,7 @@
 import { history, useModel } from "@umijs/max";
-import { Typography } from "antd";
+import { Typography, Modal } from "antd";
+import { ApplyConfirmText } from "@/constants";
+
 const { Link } = Typography;
 
 type PropsType = {
@@ -11,13 +13,21 @@ const ApplyLink = (props: PropsType) => {
   const { setMyApplyTemp } = useModel("student");
 
   const onClick = () => {
-    setMyApplyTemp({
-      year: record.year,
-      label: record.label,
-      index: record.index,
-      top: record.top!,
+    Modal.confirm({
+      width: 600,
+      title: "申报综测分守则",
+      content: ApplyConfirmText,
+      okText: "我已阅读并遵守，进入申报页面",
+      onOk: () => {
+        setMyApplyTemp({
+          year: record.year,
+          label: record.label,
+          index: record.index,
+          top: record.top!,
+        });
+        history.push("myscores/form");
+      },
     });
-    history.push("myscores/form");
   };
 
   return (
