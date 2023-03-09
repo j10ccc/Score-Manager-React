@@ -2,6 +2,7 @@ import { getTopicsAPI } from "@/services/square/getTopicsAPI";
 import { Button, Tag } from "antd";
 import { PageContainer, ProList } from "@ant-design/pro-components";
 import { Link, history } from "@umijs/max";
+import markdownToTxt from "markdown-to-txt";
 
 const TopicSquarePage = () => {
   const handleCreateTopic = () => {
@@ -49,7 +50,7 @@ const TopicSquarePage = () => {
             ),
           },
           content: {
-            render: (dom) => dom,
+            render: (dom) => markdownToTxt(dom as string),
           },
         }}
       />
